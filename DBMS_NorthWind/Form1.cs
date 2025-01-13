@@ -3,6 +3,8 @@
 using System.Data;
 using System.Data.Common;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+
+
 namespace DBMS_NorthWind
 {
     public partial class Form1 : Form
@@ -16,6 +18,10 @@ namespace DBMS_NorthWind
         SqlConnection conn;
         SqlDataAdapter da;
         SqlCommand cmd;
+        // ประกาศตัวแปรเพิ่ม
+        int shipperID = 0;
+        string companyName = string.Empty;
+        string phone = string.Empty;
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -40,85 +46,109 @@ namespace DBMS_NorthWind
 
         private void DGV_Shipper_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
-            txtShipperID.Text = DGV_Shipper.CurrentRow.Cells[0].Value.ToString();
-            txtCompanyName.Text = DGV_Shipper.CurrentRow.Cells[1].Value.ToString();
-            txtPhone.Text = DGV_Shipper.CurrentRow.Cells[2].Value.ToString();
+            shipperID = Convert.ToInt32(DGV_Shipper.CurrentRow.Cells[0].Value);
+            companyName = DGV_Shipper.CurrentRow.Cells[1].Value.ToString();
+            phone = DGV_Shipper.CurrentRow.Cells[2].Value.ToString();
+            //txtShipperID.Text = DGV_Shipper.CurrentRow.Cells[0].Value.ToString();
+            //txtCompanyName.Text = DGV_Shipper.CurrentRow.Cells[1].Value.ToString();
+            //txtPhone.Text = DGV_Shipper.CurrentRow.Cells[2].Value.ToString();
         }
 
-        private void clearForm()
-        {
-            txtShipperID.Clear();
-            txtCompanyName.Text = null;
-            txtPhone.Text = string.Empty;
-            txtCompanyName.Focus();
-        }
+        //private void clearForm()
+        //{
+        //    txtShipperID.Clear();
+        //    txtCompanyName.Text = null;
+        //    txtPhone.Text = string.Empty;
+        //    txtCompanyName.Focus();
+        //}
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            clearForm();
-        }
+        //private void btnClear_Click(object sender, EventArgs e)
+        //{
+        //    clearForm();
+        //}
 
         private void btninsert_Click(object sender, EventArgs e)
         {
-            //ตรวจสอบข้อมูล
-            if (String.IsNullOrEmpty(txtCompanyName.Text))
-            {
-                MessageBox.Show("โปรดใส่ข้อมูลก่อน", "เกิดข้อผิดพลาด");
-                return;
-            }
-            //เพิ่มข้อมูลเข้าฐานข้อมูล
-            string sql = "Insert into shippers"
-                        + " Values(@CompanyName,@Phone)";
-            cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text.Trim());
-            cmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
-            int n = cmd.ExecuteNonQuery();
-            if (n > 0)
-            {
-                Showdata();
-                clearForm();
-            }
+            //เพิ่ม
+            frmShippers f = new frmShippers();
+            f.Status = "insert";
+            f.ShowDialog();
+            Showdata();
+            ////ตรวจสอบข้อมูล
+            //if (String.IsNullOrEmpty(txtCompanyName.Text))
+            //{
+            //    MessageBox.Show("โปรดใส่ข้อมูลก่อน", "เกิดข้อผิดพลาด");
+            //    return;
+            //}
+            ////เพิ่มข้อมูลเข้าฐานข้อมูล
+            //string sql = "Insert into shippers"
+            //            + " Values(@CompanyName,@Phone)";
+            //cmd = new SqlCommand(sql, conn);
+            //cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text.Trim());
+            //cmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
+            //int n = cmd.ExecuteNonQuery();
+            //if (n > 0)
+            //{
+            //    Showdata();
+            //    clearForm();
+            //}
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(txtShipperID.Text))
+            if (shipperID <= 0)
             {
                 MessageBox.Show("โปรดเลือกข้อมูลที่จะปรับปรุง", "เกิดข้อผิดพลาด");
                 return;
             }
-            else if (String.IsNullOrEmpty(txtCompanyName.Text))
-            {
-                MessageBox.Show("โปรดใส่ข้อมูลก่อน", "เกิดข้อผิดพลาด");
-                return;
-            }
-            //เพิ่มข้อมูลเข้าฐานข้อมูล
-            string sql = "Update Shippers"
-                        + " set CompanyName = @CompanyName,Phone = @Phone"
-                        + " Where ShipperID = @ShipperID";
-            cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text.Trim());
-            cmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
-            cmd.Parameters.AddWithValue("@ShipperID", txtShipperID.Text);
-            int n = cmd.ExecuteNonQuery();
-            if (n > 0)
-            {
-                Showdata();
-                clearForm();
-            }
+            frmShippers f = new frmShippers();
+            f.Status = "update";
+            f.ShipperID = shipperID;
+            f.CompanyName = companyName;
+            f.Phone = phone;
+            f.ShowDialog();
+            Showdata();
+
+            //if (String.IsNullOrEmpty(txtShipperID.Text))
+            //{
+            //    MessageBox.Show("โปรดเลือกข้อมูลที่จะปรับปรุง", "เกิดข้อผิดพลาด");
+            //    return;
+            //}
+            //else if (String.IsNullOrEmpty(txtCompanyName.Text))
+            //{
+            //    MessageBox.Show("โปรดใส่ข้อมูลก่อน", "เกิดข้อผิดพลาด");
+            //    return;
+            //}
+            ////เพิ่มข้อมูลเข้าฐานข้อมูล
+            //string sql = "Update Shippers"
+            //            + " set CompanyName = @CompanyName,Phone = @Phone"
+            //            + " Where ShipperID = @ShipperID";
+            //cmd = new SqlCommand(sql, conn);
+            //cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text.Trim());
+            //cmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
+            //cmd.Parameters.AddWithValue("@ShipperID", txtShipperID.Text);
+            //int n = cmd.ExecuteNonQuery();
+            //if (n > 0)
+            //{
+            //    Showdata();
+            //    clearForm();
+            //}
 
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             //Confirm to delete
+            string msg = "รหัส : "+ shipperID.ToString() + Environment.NewLine;
+            msg += "บริษัท" + companyName;
+            msg += "เบอร์" + phone;
             if (MessageBox.Show("Confirm to Delete?","Confirm",MessageBoxButtons.YesNo)
                                                                             == DialogResult.No)
             {
-
+                return;
             }
 
-            if (String.IsNullOrEmpty(txtShipperID.Text))
+            if (shipperID <= 0)
             {
                 MessageBox.Show("โปรดเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด");
                 return;
@@ -135,7 +165,7 @@ namespace DBMS_NorthWind
                 if (n > 0)
                 {
                     Showdata();
-                    clearForm();
+                    ;
                 }
             } catch(Exception ex) 
             {

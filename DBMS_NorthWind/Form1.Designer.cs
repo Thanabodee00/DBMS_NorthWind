@@ -38,7 +38,6 @@
             btninsert = new Button();
             btnUpdate = new Button();
             btnDelete = new Button();
-            btnClear = new Button();
             ((System.ComponentModel.ISupportInitialize)DGV_Shipper).BeginInit();
             SuspendLayout();
             // 
@@ -54,6 +53,7 @@
             DGV_Shipper.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DGV_Shipper.Size = new Size(777, 191);
             DGV_Shipper.TabIndex = 0;
+            DGV_Shipper.CellMouseDoubleClick += DGV_Shipper_CellMouseUp;
             DGV_Shipper.CellMouseUp += DGV_Shipper_CellMouseUp;
             // 
             // label1
@@ -120,7 +120,7 @@
             // btnUpdate
             // 
             btnUpdate.BackColor = Color.FromArgb(255, 255, 192);
-            btnUpdate.Location = new Point(256, 381);
+            btnUpdate.Location = new Point(187, 381);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(94, 29);
             btnUpdate.TabIndex = 8;
@@ -131,7 +131,7 @@
             // btnDelete
             // 
             btnDelete.BackColor = Color.FromArgb(192, 192, 255);
-            btnDelete.Location = new Point(441, 381);
+            btnDelete.Location = new Point(670, 381);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
             btnDelete.TabIndex = 9;
@@ -139,23 +139,11 @@
             btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Click += btnDelete_Click;
             // 
-            // btnClear
-            // 
-            btnClear.BackColor = Color.LightCoral;
-            btnClear.Location = new Point(627, 381);
-            btnClear.Name = "btnClear";
-            btnClear.Size = new Size(94, 29);
-            btnClear.TabIndex = 10;
-            btnClear.Text = "ล้างฟอร์ม";
-            btnClear.UseVisualStyleBackColor = false;
-            btnClear.Click += btnClear_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(btnClear);
             Controls.Add(btnDelete);
             Controls.Add(btnUpdate);
             Controls.Add(btninsert);
@@ -186,6 +174,5 @@
         private Button btninsert;
         private Button btnUpdate;
         private Button btnDelete;
-        private Button btnClear;
     }
 }
